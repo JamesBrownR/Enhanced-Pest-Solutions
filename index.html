@@ -49,6 +49,15 @@
             font-weight: bold;
             color: #fff;
             text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+            border-radius: 5px;
         }
 
         .contact-info {
@@ -229,18 +238,89 @@
             background: #f8f9fa;
             border-radius: 10px;
             overflow: hidden;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             aspect-ratio: 4/3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed #ddd;
-            color: #666;
-            font-size: 1.1rem;
+            position: relative;
+            cursor: pointer;
         }
 
         .gallery-item:hover {
             transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item .placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            border: 2px dashed #ddd;
+            color: #666;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            color: white;
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            transform: translateY(0);
+        }
+
+        /* Modal for enlarged images */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            max-height: 80%;
+            object-fit: contain;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #bbb;
         }
 
         /* Reviews Section */
@@ -414,7 +494,11 @@
     <header>
         <div class="container">
             <div class="header-content">
-                <a href="#home" class="logo">Enhanced Pest Solutions</a>
+                <a href="#home" class="logo">
+                    <!-- Replace 'logo.jpg' with your actual logo filename -->
+                    <img src="logo.jpg" alt="Enhanced Pest Solutions Logo" class="logo-img">
+                    Enhanced Pest Solutions
+                </a>
                 <div class="contact-info">
                     <a href="tel:5202458945" class="phone">📞 (520) 245-8945</a>
                     <span>🏠 Tucson, Arizona</span>
@@ -505,12 +589,33 @@
             <div class="container">
                 <h2 class="section-title">Our Work Gallery</h2>
                 <div class="gallery-grid">
-                    <div class="gallery-item">Before/After Photos</div>
-                    <div class="gallery-item">Treatment Process</div>
-                    <div class="gallery-item">Equipment & Tools</div>
-                    <div class="gallery-item">Completed Projects</div>
-                    <div class="gallery-item">Inspection Photos</div>
-                    <div class="gallery-item">Customer Properties</div>
+                    <!-- Replace these with your actual image filenames -->
+                    <div class="gallery-item" onclick="openModal('service1.jpg')">
+                        <img src="service1.jpg" alt="Completed pest control service - Before and after treatment">
+                        <div class="gallery-overlay">
+                            <h4>Service Completion</h4>
+                            <p>Professional pest treatment results</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item" onclick="openModal('service2.jpg')">
+                        <img src="service2.jpg" alt="Professional pest control work in progress">
+                        <div class="gallery-overlay">
+                            <h4>Professional Treatment</h4>
+                            <p>Expert pest control application</p>
+                        </div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="placeholder">Additional Photos Coming Soon</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="placeholder">Equipment & Tools</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="placeholder">Inspection Process</div>
+                    </div>
+                    <div class="gallery-item">
+                        <div class="placeholder">Customer Properties</div>
+                    </div>
                 </div>
                 <p style="text-align: center; margin-top: 30px; color: #666; font-style: italic;">
                     Gallery photos coming soon! Contact us to see examples of our recent work.
@@ -619,6 +724,12 @@
             </div>
         </div>
     </footer>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
 
     <script>
         // Smooth scrolling for navigation links
